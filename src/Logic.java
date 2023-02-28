@@ -44,15 +44,15 @@ public class Logic {
     public void checkData() {
         Scanner scanner = new Scanner(System.in);
         String input = "";
-        System.out.println("Would you liked to change any data previously given? Give 'yes' or 'no'.");
+        System.out.println("Would you liked to change any data previously given? Type 'yes' or 'no'.");
         while (!input.equals("no")) {
             input = scanner.nextLine().toLowerCase();
             switch (input) {
                 case "yes":
                     System.out.println("What would you liked to change? \n" +
                             "1: Total amount. \n" +
-                            "2: Annual interest rate \n" +
-                            "3: Period (years)"
+                            "2: Annual interest rate. \n" +
+                            "3: Period (years)."
                     );
                     int choice = scanner.nextInt();
                     switch (choice) {
@@ -80,16 +80,16 @@ public class Logic {
 
 
     public void changeDataMsg () {
-        System.out.print("Would you like to change anything? Type 'yes' or 'no': ");
+        System.out.print("Would you like to change anything else? Type 'yes' or 'no': ");
     }
     public String mortgageMonthlyPayment(byte MONTHS_IN_YEAR, byte PERCENTAGE){
         short periodMonths = (short) (this.PERIOD_TOTAL * MONTHS_IN_YEAR) ;
-        double interestRateMonthly = this.INTEREST_RATE/PERCENTAGE/periodMonths;
+        double interestMonthly = this.INTEREST_RATE/PERCENTAGE/periodMonths;
 
         double mortgagePerMonth =
                 this.TOTAL_AMOUNT *
-                        ((interestRateMonthly*Math.pow((1+interestRateMonthly),periodMonths))
-                                / (Math.pow((1+interestRateMonthly),periodMonths)-1));
+                        ((interestMonthly*Math.pow((1+interestMonthly),periodMonths))
+                                / (Math.pow((1+interestMonthly),periodMonths)-1));
 
         String resultMonthly = NumberFormat.getCurrencyInstance().format(mortgagePerMonth);
         return resultMonthly;
