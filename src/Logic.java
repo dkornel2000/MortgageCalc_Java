@@ -1,4 +1,5 @@
 import java.text.NumberFormat;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Logic {
@@ -24,6 +25,7 @@ public class Logic {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Please type in the total amount of the mortgage:");
         int input = scanner.nextInt();
+
         this.TOTAL_AMOUNT = input;
     }
 
@@ -37,9 +39,25 @@ public class Logic {
     public void periodTotal() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Please type in the period of the mortgage (years):");
-        byte input = scanner.nextByte();
+        byte input = 0;
+
+        boolean validInput = false;
+        while (!validInput)
+            try {
+                input = scanner.nextByte();
+                while (!(input > 0 && input <=100)){
+                    System.out.println("Please give a valid year number between 1 - 100");
+                    input = scanner.nextByte();
+                }
+                validInput = true;
+            }
+            catch (InputMismatchException e){
+                System.out.println("Please give a valid year number between 1 - 100");
+                scanner.nextLine();
+            }
         this.PERIOD_TOTAL = input;
-    }
+        }
+
 
     public void checkData() {
         Scanner scanner = new Scanner(System.in);
