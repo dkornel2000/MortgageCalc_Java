@@ -3,8 +3,6 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Logic {
-    static final byte MONTHS_IN_YEAR = 12;
-    static final byte PERCENTAGE = 100;
     double INTEREST_RATE;
     byte PERIOD_TOTAL;
     int TOTAL_AMOUNT;
@@ -18,22 +16,50 @@ public class Logic {
 
         checkData();
 
-        String monthlyRate = mortgageMonthlyPayment(MONTHS_IN_YEAR, PERCENTAGE);
-        return monthlyRate;
+        return mortgageMonthlyPayment();
     }
     public void totalAmount() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Please type in the total amount of the mortgage:");
-        int input = scanner.nextInt();
+        int input = 0;
 
-        this.TOTAL_AMOUNT = input;
+        boolean validInput = false;
+        while (!validInput)
+            try {
+                input = scanner.nextInt();;
+                while (!(input >= 1000 && input <=1000000)){
+                    System.out.println("The total amount must be between 1000 and 1.000.000");
+                    input = scanner.nextInt();
+                }
+                validInput = true;
+            }
+            catch (InputMismatchException e){
+                System.out.println("The total amount must be between 1000 and 1.000.000");
+                scanner.nextLine();
+            }
+        this.TOTAL_AMOUNT= input;
     }
 
     public void interestRate() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Please type in the annual interest rate:");
-        double input = scanner.nextDouble();
-        this.INTEREST_RATE = input;
+        double input = 0;
+
+        boolean validInput = false;
+        while (!validInput)
+            try {
+                input = scanner.nextDouble();;
+                while (!(input > 1 && input <=50)){
+                    System.out.println("Please give a valid interest rate between 1 and 50");
+                    input = scanner.nextDouble();
+                }
+                validInput = true;
+            }
+            catch (InputMismatchException e){
+                System.out.println("Please give a valid interest rate number (can be fraction).");
+                scanner.nextLine();
+            }
+        this.INTEREST_RATE= input;
     }
 
     public void periodTotal() {
@@ -58,11 +84,15 @@ public class Logic {
         this.PERIOD_TOTAL = input;
         }
 
-
+    // Displays all the previously given data and gives an opportunity to the user, to change any data.
     public void checkData() {
         Scanner scanner = new Scanner(System.in);
         String input = "";
-        System.out.println("Would you liked to change any data previously given? Type 'yes' or 'no'.");
+        System.out.println("\nThese are all the data you have previously given:\n");
+        System.out.println( "The total amount: "+this.TOTAL_AMOUNT +
+                            "\nLength of the mortgage: "+ this.PERIOD_TOTAL +
+                            "\nThe interest rate: "+ this.INTEREST_RATE);
+        System.out.println("\nWould you liked to change any data previously given? Type 'yes' or 'no'.");
         while (!input.equals("no")) {
             input = scanner.nextLine().toLowerCase();
             switch (input) {
@@ -100,7 +130,13 @@ public class Logic {
     public void changeDataMsg () {
         System.out.print("Would you like to change anything else? Type 'yes' or 'no': ");
     }
-    public String mortgageMonthlyPayment(byte MONTHS_IN_YEAR, byte PERCENTAGE){
+
+    // Calculates the amount has to be paid each month.
+    public String mortgageMonthlyPayment(){
+
+        final byte MONTHS_IN_YEAR = 12;
+        final byte PERCENTAGE = 100;
+
         short periodMonths = (short) (this.PERIOD_TOTAL * MONTHS_IN_YEAR) ;
         double interestMonthly = this.INTEREST_RATE/PERCENTAGE/periodMonths;
 
